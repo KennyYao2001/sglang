@@ -172,6 +172,25 @@ class Qwen3Detector(BaseReasoningFormatDetector):
             stream_reasoning=stream_reasoning,
         )
 
+class InternS1Detector(BaseReasoningFormatDetector):
+    """
+    Detector for InternS1 models (e.g., InternS1/InternS1-235B-A22B).
+    Assumes reasoning format:
+      (<think>)*(.*)</think>
+    InternS1 models always generates thinking content.
+
+    Args:
+        stream_reasoning (bool): If False, accumulates reasoning content until the end tag.
+            If True, streams reasoning content as it arrives.
+    """
+
+    def __init__(self, stream_reasoning: bool = True, force_reasoning: bool = False):
+        super().__init__(
+            "<think>",
+            "</think>",
+            force_reasoning=force_reasoning,
+            stream_reasoning=stream_reasoning,
+        )
 
 class KimiDetector(BaseReasoningFormatDetector):
     """
@@ -297,6 +316,7 @@ class ReasoningParser:
         "minimax": Qwen3Detector,
         "minimax-append-think": MiniMaxAppendThinkDetector,
         "step3": DeepSeekR1Detector,
+        "interns1": InternS1Detector,
     }
 
     def __init__(
