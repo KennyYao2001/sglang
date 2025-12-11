@@ -447,7 +447,7 @@ class OpenAIServingChat(OpenAIServingBase):
             prompt = conv.get_prompt()
             if self._get_reasoning_from_request(
                 request
-            ) and self.reasoning_parser not in ["qwen3", "qwen3-thinking", "glm4"]:
+            ) and self.reasoning_parser not in ["qwen3", "qwen3-thinking", "glm4", "interns1"]:
                 # qwen3 and glm4 think internally without a leading <think> token
                 prompt += "<think>"  # Note(Xinyuan): hard code thinking token
 
@@ -1067,7 +1067,7 @@ class OpenAIServingChat(OpenAIServingBase):
                 and request.chat_template_kwargs.get("thinking") is True
             )
         if self.reasoning_parser in ["qwen3", "glm45", "interns1"]:
-            # qwen3 and glm45 are reasoning by default
+            # qwen3, glm45 and interns1 are reasoning by default
             return (
                 not request.chat_template_kwargs
                 or request.chat_template_kwargs.get("enable_thinking", True) is True
